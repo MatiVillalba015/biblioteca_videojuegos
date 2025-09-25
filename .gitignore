@@ -1,0 +1,13 @@
+﻿# .gitignore para .NET
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+*.db
+*.sqlite
+*.log
+appsettings.Development.json
+.vs/
+.vscode/
+.nuget/
+packages/
+**/launchSettings.json
