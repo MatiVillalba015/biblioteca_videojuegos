@@ -33,7 +33,9 @@ namespace BibliotecaVideojuegos.Services
 
         public async Task<VideoJuegoReadDto> GetVideoJuegoPorId(int id)
         {
-            var juego = await _context.videoJuegos.FindAsync(id); 
+            try
+            {
+                var juego = await _context.videoJuegos.FindAsync(id);
                 if (juego != null)
                 {
                     var juegoDto = new VideoJuegoReadDto
@@ -48,13 +50,19 @@ namespace BibliotecaVideojuegos.Services
                         Puntuacion = juego.Puntuacion
                     };
                     return juegoDto;
-                };
-            return null;
+                }
+                ;
+                return null;
+            }
+            catch (Exception ex) 
+            {
+                throw new Exception("Error al obtener el juego por Id", ex);
+            }
         }
 
         public async Task<VideoJuegoReadDto> GetVideoJuegoPorNombre(string nombre)
         {
-            var juego = await _context.videoJuegos.FindAsync(nombre);
+            var juego = await _context.videoJuegos.FirstOrDefaultAsync(x => x.Nombre == nombre);
             if(nombre != null)
             {
                 var juegoDto = new VideoJuegoReadDto
@@ -75,21 +83,28 @@ namespace BibliotecaVideojuegos.Services
 
         public async Task<IEnumerable<VideoJuegoReadDto>> GetVideoJuegoPorSaga(string saga)
         {
-            var juegos = await _context.videoJuegos
-                .Where(x => x.Saga == saga)
-                .Select(x => new VideoJuegoReadDto
-                {
-                    Id = x.Id,
-                    Nombre = x.Nombre,
-                    Genero = x.Genero,
-                    Saga = x.Saga,
-                    FechaLanzamiento = x.FechaLanzamiento,
-                    CompaniaDesarrolladora = x.CompaniaDesarrolladora,
-                    Estado = x.Estado,
-                    Puntuacion = x.Puntuacion
-                }).ToListAsync();
-                        
-            return juegos;
+            try
+            {
+                var juegos = await _context.videoJuegos
+                    .Where(x => x.Saga == saga)
+                    .Select(x => new VideoJuegoReadDto
+                    {
+                        Id = x.Id,
+                        Nombre = x.Nombre,
+                        Genero = x.Genero,
+                        Saga = x.Saga,
+                        FechaLanzamiento = x.FechaLanzamiento,
+                        CompaniaDesarrolladora = x.CompaniaDesarrolladora,
+                        Estado = x.Estado,
+                        Puntuacion = x.Puntuacion
+                    }).ToListAsync();
+
+                return juegos;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Error al obtener el juego por Saga", ex);
+            }
         }
 
         public async Task<VideoJuegoUpdateDto> UpdateVideoJuego(int id, VideoJuegoUpdateDto videoJuegoUpdateDto)

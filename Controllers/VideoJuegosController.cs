@@ -40,7 +40,7 @@ namespace BibliotecaVideojuegos.Controllers
             await _videojuegoService.GetAllVideoJuegos();
 
         //obtener videojuego por ID
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<VideoJuegoReadDto>> GetVideoJuegoPorId(int id)
         {
             var juegoDto = await _videojuegoService.GetVideoJuegoPorId(id);
@@ -49,7 +49,7 @@ namespace BibliotecaVideojuegos.Controllers
         }
 
         //obtener videojuego por Nombre
-        [HttpGet("{nombre}")]
+        [HttpGet("nombre/{nombre}")]
         public async Task<ActionResult<VideoJuegoReadDto>> GetVideoJuegoPorNombre(string nombre)
         {
             var juegoDto = await _videojuegoService.GetVideoJuegoPorNombre(nombre);
@@ -57,7 +57,7 @@ namespace BibliotecaVideojuegos.Controllers
         }
 
         //obtener videojuego por Saga
-        [HttpGet("{saga}")]
+        [HttpGet("saga/{saga}")]
         public async Task<ActionResult<VideoJuegoReadDto>> GetVideoJuegoPorSaga(string saga)
         {
             var juegoDto = await _videojuegoService.GetVideoJuegoPorSaga(saga);
@@ -113,7 +113,5 @@ namespace BibliotecaVideojuegos.Controllers
         {
             return Ok("Esta basura funciona");
         }
-
-
     }
 }

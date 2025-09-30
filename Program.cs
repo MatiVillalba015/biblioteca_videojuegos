@@ -13,6 +13,18 @@ builder.Services.AddControllers(); // <- Habilita los controladores API
 builder.Services.AddEndpointsApiExplorer(); // <- Necesario para Swagger
 builder.Services.AddSwaggerGen(); // <- Genera la documentación Swagger
 
+//CORS
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirTodo", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 //BASE DE DATOS 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<VideoJuegosContext>(options =>
@@ -38,6 +50,10 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 //MAPEO DE LOS CONTROLADORES
+app.UseCors("PermitirTodo");
+
+app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
