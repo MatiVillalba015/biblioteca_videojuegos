@@ -7,6 +7,7 @@ using BibliotecaVideojuegos.DTOs;
 using BibliotecaVideojuegos.Models;
 using BibliotecaVideojuegos.Services;
 using FluentValidation;
+using SQLitePCL;
 
 
 namespace BibliotecaVideojuegos.Controllers
@@ -102,7 +103,25 @@ namespace BibliotecaVideojuegos.Controllers
             return juegoDto == null ? NotFound() : Ok(juegoDto);
         }
 
+        //Ordenar por puntuacion Mayor-Menor
+        [HttpGet("Ordenar_Puntuacion_Mayor")]
+        public async Task<IEnumerable<VideoJuegoReadDto>> OrdenarVideojuegoPorMayorPuntuacion() =>
+            await _videojuegoService.OrdenarVideojuegoPorMayorPuntuacion();
 
+        //Ordenar por puntuacion Menor-Mayor
+        [HttpGet("Ordenar_Puntuacion_Menor")]
+        public async Task<IEnumerable<VideoJuegoReadDto>> OrdenarVideojuegoPorMenorPuntuacion() =>
+            await _videojuegoService.OrdenarVideojuegoPorMenorPuntuacion();
+
+        //Ordenar por fecha de salida mas reciente
+        [HttpGet("Ordenar_Antiguo")]
+        public async Task<IEnumerable<VideoJuegoReadDto>> OrdenarVideoJuegoPorFechaAntiguedad() =>
+            await _videojuegoService.OrdenarVideoJuegoPorFechaAntiguedad();
+
+        //Ordenar por fecha de salida mas antiguo
+        [HttpGet("Ordenar_Reciente")]
+        public async Task<IEnumerable<VideoJuegoReadDto>> OrdenarVideoJuegoPorReciente() =>
+            await _videojuegoService.OrdenarVideoJuegoPorReciente();
 
 
         //----------------------------------------------------------------------------------

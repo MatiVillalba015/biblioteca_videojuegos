@@ -54,7 +54,7 @@ namespace BibliotecaVideojuegos.Services
                 ;
                 return null;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 throw new Exception("Error al obtener el juego por Id", ex);
             }
@@ -63,7 +63,7 @@ namespace BibliotecaVideojuegos.Services
         public async Task<VideoJuegoReadDto> GetVideoJuegoPorNombre(string nombre)
         {
             var juego = await _context.videoJuegos.FirstOrDefaultAsync(x => x.Nombre == nombre);
-            if(nombre != null)
+            if (nombre != null)
             {
                 var juegoDto = new VideoJuegoReadDto
                 {
@@ -101,7 +101,7 @@ namespace BibliotecaVideojuegos.Services
 
                 return juegos;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("Error al obtener el juego por Saga", ex);
             }
@@ -110,7 +110,7 @@ namespace BibliotecaVideojuegos.Services
         public async Task<VideoJuegoUpdateDto> UpdateVideoJuego(int id, VideoJuegoUpdateDto videoJuegoUpdateDto)
         {
             var juego = await _context.videoJuegos.FindAsync(id);
-            if(juego != null)
+            if (juego != null)
             {
                 juego.Nombre = videoJuegoUpdateDto.Nombre;
                 juego.Genero = videoJuegoUpdateDto.Genero;
@@ -189,6 +189,59 @@ namespace BibliotecaVideojuegos.Services
             }
             return false;
         }
+
+        public async Task<IEnumerable<VideoJuegoReadDto>> OrdenarVideojuegoPorMayorPuntuacion() =>
+            await _context.videoJuegos.Select(x => new VideoJuegoReadDto
+            {
+                Id = x.Id,
+                Nombre = x.Nombre,
+                Genero = x.Genero,
+                Saga = x.Saga,
+                FechaLanzamiento = x.FechaLanzamiento,
+                CompaniaDesarrolladora = x.CompaniaDesarrolladora,
+                Estado = x.Estado,
+                Puntuacion = x.Puntuacion
+
+            }).OrderByDescending(x => x.Puntuacion).ToListAsync();
+
+        public async Task<IEnumerable<VideoJuegoReadDto>> OrdenarVideojuegoPorMenorPuntuacion() =>
+            await _context.videoJuegos.Select(x => new VideoJuegoReadDto
+            {
+                Id = x.Id,
+                Nombre = x.Nombre,
+                Genero = x.Genero,
+                Saga = x.Saga,
+                FechaLanzamiento = x.FechaLanzamiento,
+                CompaniaDesarrolladora = x.CompaniaDesarrolladora,
+                Estado = x.Estado,
+                Puntuacion = x.Puntuacion
+            }).OrderBy(x => x.Puntuacion).ToListAsync();
+
+        public async Task<IEnumerable<VideoJuegoReadDto>> OrdenarVideoJuegoPorFechaAntiguedad() =>
+            await _context.videoJuegos.Select(x => new VideoJuegoReadDto
+            {
+                Id = x.Id,
+                Nombre = x.Nombre,
+                Genero = x.Genero,
+                Saga = x.Saga,
+                FechaLanzamiento = x.FechaLanzamiento,
+                CompaniaDesarrolladora = x.CompaniaDesarrolladora,
+                Estado = x.Estado,
+                Puntuacion = x.Puntuacion
+            }).OrderBy(x => x.FechaLanzamiento).ToListAsync();
+
+        public async Task<IEnumerable<VideoJuegoReadDto>> OrdenarVideoJuegoPorReciente() =>
+            await _context.videoJuegos.Select(x => new VideoJuegoReadDto
+            {
+                Id = x.Id,
+                Nombre = x.Nombre,
+                Genero = x.Genero,
+                Saga = x.Saga,
+                FechaLanzamiento = x.FechaLanzamiento,
+                CompaniaDesarrolladora = x.CompaniaDesarrolladora,
+                Estado = x.Estado,
+                Puntuacion = x.Puntuacion
+            }).OrderByDescending(x => x.FechaLanzamiento).ToListAsync();
 
 
     }
